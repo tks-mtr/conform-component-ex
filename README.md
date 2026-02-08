@@ -1,4 +1,4 @@
-# Welcome to React Router!
+# Welcome to React Router
 
 A modern, production-ready template for building full-stack React applications using React Router.
 
@@ -16,9 +16,23 @@ A modern, production-ready template for building full-stack React applications u
 
 ## Getting Started
 
+### Prerequisites
+
+- Node.js (LTS version recommended)
+- npm
+- Docker (optional, for containerized run)
+  - If you are using Colima, make sure to run `colima start` before using docker commands.
+
 ### Installation
 
-Install the dependencies:
+First, clone the repository:
+
+```bash
+git clone https://github.com/YOUR_USERNAME/conform_compornent_ex.git
+cd conform_compornent_ex
+```
+
+Then, install the dependencies:
 
 ```bash
 npm install
@@ -49,10 +63,17 @@ npm run build
 To build and run using Docker:
 
 ```bash
-docker build -t my-app .
+# Build the Docker image manually
+docker build -t conform-component-ex .
 
-# Run the container
-docker run -p 3000:3000 my-app
+# OR use the npm script shortcut
+npm run docker:build
+
+# Run the container manually
+docker run -p 3000:3000 conform-component-ex
+
+# OR use the npm script shortcut
+npm run docker:run
 ```
 
 The containerized application can be deployed to any platform that supports Docker, including:
@@ -70,7 +91,7 @@ If you're familiar with deploying Node applications, the built-in app server is 
 
 Make sure to deploy the output of `npm run build`
 
-```
+```text
 ├── package.json
 ├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
 ├── build/
