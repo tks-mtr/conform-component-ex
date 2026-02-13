@@ -1,4 +1,5 @@
 import { useLoaderData, Link, Form, useSubmit, useSearchParams } from "react-router";
+// import { generateUserListPdf } from "../utils/pdf-generator"; // 不要
 import { departments, employees } from "../data/mock";
 import { type EmployeeWithDepartment } from "../models/schema";
 import { Combobox } from "../components/ui/combobox-shadcn";
@@ -77,17 +78,28 @@ export default function UserList() {
   const submit = useSubmit();
   const [searchParams] = useSearchParams();
 
+  // Resource RouteのURL構築
+  const pdfUrl = `/resources/user-list-pdf${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
+
   return (
     <div className="min-h-screen bg-green-50 flex flex-col items-center p-4 pt-10">
       <div className="w-full max-w-4xl bg-white rounded-xl shadow-lg p-8">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-900">ユーザー一覧</h1>
-          <Link
-            to="/assign"
-            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-          >
-            新規登録
-          </Link>
+          <div className="flex gap-4">
+            <a
+              href={pdfUrl}
+              className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors flex items-center"
+            >
+              PDF出力
+            </a>
+            <Link
+              to="/assign"
+              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+            >
+              新規登録
+            </Link>
+          </div>
         </div>
 
         {/* 検索フォーム */}
