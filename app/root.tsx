@@ -10,6 +10,30 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 
+const NESTJS_BASE_URL = process.env.NESTJS_BASE_URL ?? 'http://localhost:3000'
+
+/**
+ * ページ読み込み・リロード時に未読通知を取得するloader。
+ * SSE切断中に取りこぼした通知をサルベージするために使用する。
+ *
+ * @returns 未読通知の一覧（取得失敗時は空配列）
+ */
+export async function loader() {
+  // TODO: 実際の認証が入ったらセッションからuserIdを取得する
+  const userId = 'user-001'
+
+  try {
+    const res = await fetch(
+      `${NESTJS_BASE_URL}/notifications/pending?userId=${encodeURIComponent(userId)}`,
+    )
+    if (!res.ok) return { pendingNotifications: [] }
+    const pendingNotifications = await res.json()
+    return { pendingNotifications }
+  } catch {
+    return { pendingNotifications: [] }
+  }
+}
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
