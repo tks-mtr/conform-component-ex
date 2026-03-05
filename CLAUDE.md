@@ -40,12 +40,22 @@ chore: backend/node_modulesをgitignoreに追加
 | バックエンド（backend/） | Jest + @nestjs/testing |
 
 ### タイミング
-実装コミットの直後に、対応するテストをコミットする。
+各Phaseの実装コミット直後に、対応するUTをコミットする（実装とテストを同一Phaseで完結させる）。
 
 ```
 feat: notifications.serviceを実装
 test: notifications.serviceのユニットテストを追加  ← 実装の直後
 ```
+
+### カバレッジ基準
+- ステートメントカバレッジ: **80%以上**
+- ビジネスロジックを持つ Service クラス: **90%以上**
+- 正常系・異常系（エラーハンドリング）の両方をテストすること
+
+### モック方針
+- UT（Phase 2〜4）: Redis・DB・fetchはすべてモック化する
+- 結合テスト（Phase 5）: Docker ComposeでRedis・DBを実際に起動して全フローを検証する
+- NestJS の Service テストは `@nestjs/testing` の `TestingModule` を使用する
 
 ### テストファイルの配置
 - BFF: `app/**/*.test.ts` / `app/**/*.test.tsx`
