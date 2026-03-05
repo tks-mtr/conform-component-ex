@@ -10,7 +10,7 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 
-const NESTJS_BASE_URL = process.env.NESTJS_BASE_URL ?? 'http://localhost:3000'
+const NESTJS_BASE_URL = process.env.NESTJS_BASE_URL ?? 'http://localhost:3001'
 
 /**
  * ページ読み込み・リロード時に未読通知を取得するloader。

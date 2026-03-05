@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs } from 'react-router'
 import { notificationEmitter, type JobCompletedPayload } from '../lib/notification-emitter'
 
-const NESTJS_BASE_URL = process.env.NESTJS_BASE_URL ?? 'http://localhost:3000'
+const NESTJS_BASE_URL = process.env.NESTJS_BASE_URL ?? 'http://localhost:3001'
 
 /**
  * SSE形式のデータ文字列を生成する。
