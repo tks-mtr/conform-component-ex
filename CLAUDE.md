@@ -30,3 +30,23 @@ chore: backend/node_modulesをgitignoreに追加
 ### 禁止事項
 - `node_modules/` をコミットしない
 - 複数のPhaseをまとめて1コミットにしない
+
+## テスト方針
+
+### フレームワーク
+| レイヤー | ツール |
+|---------|--------|
+| BFF/フロントエンド（app/） | Vitest + React Testing Library |
+| バックエンド（backend/） | Jest + @nestjs/testing |
+
+### タイミング
+実装コミットの直後に、対応するテストをコミットする。
+
+```
+feat: notifications.serviceを実装
+test: notifications.serviceのユニットテストを追加  ← 実装の直後
+```
+
+### テストファイルの配置
+- BFF: `app/**/*.test.ts` / `app/**/*.test.tsx`
+- backend: `backend/src/**/*.spec.ts`（NestJS規約に従う）
