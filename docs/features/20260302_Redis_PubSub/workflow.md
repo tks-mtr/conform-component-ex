@@ -2,6 +2,7 @@
 
 > 対応設計書: `docs/features/20260302_Redis_PubSub/Functional Requirements.md`
 > 作成日: 2026-03-02
+> 改訂: 2026-03-05 テスト技術スタック・各PhaseにUT項目を追加
 
 ---
 
@@ -292,6 +293,17 @@ backend/
 
 ## 8. 開発フェーズ
 
+### テスト技術スタック
+
+| レイヤー | フレームワーク | 実行コマンド |
+|---------|--------------|------------|
+| BFF/フロントエンド（`app/`） | Vitest + React Testing Library | `npm test`（ルート） |
+| バックエンド（`backend/`） | Jest + @nestjs/testing | `npm test`（`backend/`内） |
+
+**方針:** 各実装コミットの直後に、対応するユニットテストをコミットする。
+
+---
+
 ### Phase 1: 基盤整備（依存関係・DB・Redis）
 
 **目標:** 両プロジェクトの共通基盤を構築
@@ -310,6 +322,7 @@ backend/
 - [ ] BFF起動時の `SUBSCRIBE` 処理実装（`server.ts` または適当な初期化フック）
 - [ ] `backend/src/redis/redis.service.ts` の作成（NestJS用・PUBLISH専用）
 - [ ] compose.yml に NestJS サービスを追加
+- [ ] テスト環境セットアップ（Vitest + RTL / Jest）
 
 ### Phase 2: NestJSバックエンド実装
 
@@ -318,11 +331,14 @@ backend/
 - [ ] `backend/src/notifications/notifications.service.ts` の作成
   - `getPendingNotifications()` 関数
   - `markAsNotified(jobId)` 関数
+- [ ] `backend/src/notifications/notifications.service.spec.ts` の作成（UT）
 - [ ] `backend/src/notifications/notifications.controller.ts` の作成
   - `GET /notifications/pending`
   - `POST /notifications/:jobId/read`
+- [ ] `backend/src/notifications/notifications.controller.spec.ts` の作成（UT）
 - [ ] `backend/src/mock/mock.service.ts` の作成
   - DB INSERT + Redis PUBLISH の統合
+- [ ] `backend/src/mock/mock.service.spec.ts` の作成（UT）
 - [ ] `backend/src/mock/mock.controller.ts` の作成
   - `POST /mock/trigger-job`
 
@@ -334,6 +350,7 @@ backend/
   - **初期データ同期:** ストリーム開始直後に、NestJSの未読取得API（`GET /notifications/pending`）を呼び出し、過去数秒の瞬断で取りこぼした未読通知を流し込む。
   - **購読設定:** EventEmitter を購読し、自分宛てのイベントのみをSSEストリームに流す処理
   - **クリーンアップ:** 接続切断時のクリーンアップ（`request.signal.addEventListener('abort')` で listener を削除し、メモリリークを防止）
+- [ ] `app/routes/api.sse.notifications.test.ts` の作成（UT）
 - [ ] `app/root.tsx` の変更
   - `loader` に NestJS の未読通知取得API呼出を追加
   - `<NotificationProvider>` の組込
@@ -346,9 +363,11 @@ backend/
   - EventSource の初期化・切断管理
   - 通知キューの状態管理
   - 既読化APIコール（NestJS）＋リトライロジック（指数バックオフ）
+- [ ] `app/hooks/useNotification.test.ts` の作成（UT）
 - [ ] `app/components/notifications/NotificationModal.tsx` の作成
   - shadcn/ui `<Dialog>` ベースのモーダル
   - 複数通知のキュー表示制御
+- [ ] `app/components/notifications/NotificationModal.test.tsx` の作成（UT）
 - [ ] `app/components/notifications/NotificationProvider.tsx` の作成
   - Context による通知状態の全体共有
 
