@@ -118,3 +118,32 @@ curl -X POST "http://localhost:3001/notifications/job-test-001/read"
 - `app/hooks/useNotification.ts` — EventSource管理・通知キュー・既読化リトライ
 - `app/components/notifications/NotificationModal.tsx` — shadcn/ui Dialog
 - `app/components/notifications/NotificationProvider.tsx` — Context配布
+
+---
+
+## 2026-03-06 | API設計書の作成
+
+### 作成内容
+
+| ファイル | 内容 |
+|---------|------|
+| `API_design_structure_project.md` | API設計書の共通テンプレート（骨組み＋肉付け） |
+| `api_design_workflow.md` | 設計書作成計画・チェックリスト |
+| `API_design/sse_notifications.md` | GET /api/sse/notifications |
+| `API_design/notifications_pending.md` | GET /notifications/pending |
+| `API_design/notifications_read.md` | POST /notifications/:jobId/read |
+| `API_design/mock_trigger_job.md` | POST /mock/trigger-job |
+
+### 作成の流れ
+
+1. 既存の2つのテンプレート（`API_design_structure_Cproject.md` / `API_design_structure_Cproject_implementA.md`）を統合し、本プロジェクト向けの共通テンプレート `API_design_structure_project.md` を作成
+   - 骨組み（8セクション構成）をベースに、データモデル・エラーレスポンス統一形式・処理フロー・curl例を肉付け
+2. `api_design_workflow.md` で対象4本のチェックリストを作成
+3. 実装ファイル（controller・service・dto・schema）を読み込み、実態に沿った内容で各設計書を作成
+4. 全4本完成後、チェックリストを更新してコミット
+
+### ポイント
+
+- エンドポイントの担当レイヤー（BFF / NestJS）を設計書ごとに明示
+- 動作確認のcurlコマンドを各設計書に記載し、再現性を確保
+- `mock/trigger-job` は開発専用APIであることを設計書に明記（本番公開禁止）
